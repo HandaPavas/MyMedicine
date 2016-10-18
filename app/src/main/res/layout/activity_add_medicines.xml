@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_medicines"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.ashutosh.iiitd.mymedicine.Add_medicines">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Medicine Details"
+        android:id = "@+id/tv_details"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_details">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:id="@+id/inner_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/scrollView1"
+        android:id="@+id/button_save"
+        android:text="Save"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

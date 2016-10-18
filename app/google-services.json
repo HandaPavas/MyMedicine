@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "10943589063",
+    "project_id": "mymedicine-1210"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10943589063:android:d7e70123fbddcb27",
+        "android_client_info": {
+          "package_name": "com.ashutosh.iiitd.mymedicine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10943589063-dej3nrgag8uqgclt6gfa97edr3al57uo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ashutosh.iiitd.mymedicine",
+            "certificate_hash": "CF2B3BCA256266DDE134149A5E0C2DF7D42137AF"
+          }
+        },
+        {
+          "client_id": "10943589063-tqpdrfo1jfe7ekrsdd68q54nbph4cago.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApxIP7TeJ052d6BamO3dcKoIQ6AWSfk6c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
