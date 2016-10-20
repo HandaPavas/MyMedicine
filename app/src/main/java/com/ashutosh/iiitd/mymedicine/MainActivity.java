@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent_for_location = new Intent(MainActivity.this, Activity_for_details.class);
                 startActivity(intent_for_location);
+                overridePendingTransition  (R.anim.right_slide_in, R.anim.right_slide_out);
             }
         });
 

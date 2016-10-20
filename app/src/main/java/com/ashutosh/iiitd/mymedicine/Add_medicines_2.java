@@ -1,8 +1,10 @@
 package com.ashutosh.iiitd.mymedicine;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -24,7 +26,7 @@ public class Add_medicines_2 extends AppCompatActivity {
     private Medicine_Adapter mAdapter;
     private final String KEY_FOR_NAME = "med_name";
     private final String KEY_FOR_TYPE = "med_type";
-
+    private int flag_before_exit = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,34 @@ public class Add_medicines_2 extends AppCompatActivity {
         intent.putExtra(KEY_FOR_NAME,tb_name.getText().toString());
         intent.putExtra(KEY_FOR_TYPE,sp_type.getSelectedItem().toString());
         startActivity(intent);
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(flag_before_exit == 0)
+        {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("The values are yet to save. Do you wish to exit now ?");
+
+            alertDialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Toast.makeText(Add_medicines_2.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Yes",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    overridePendingTransition  (R.anim.right_slide_in, R.anim.right_slide_out);
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
     }
 }
