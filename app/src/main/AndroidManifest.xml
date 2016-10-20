@@ -32,7 +32,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Set_location" />
         <activity android:name=".Activity_for_details" />
-        <activity android:name=".Add_medicines"></activity>
+        <activity android:name=".Add_medicines" />
+        <activity
+            android:name=".Add_medicines_2"
+            android:label="@string/title_activity_add_medicines_2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".alarm_activity"></activity>
     </application>
 
 </manifest>

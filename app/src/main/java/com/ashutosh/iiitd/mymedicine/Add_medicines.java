@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.view.Display;
 import android.graphics.Point;
@@ -31,52 +32,54 @@ public class Add_medicines extends AppCompatActivity {
         int height = size.y;
         changing_factor = height / 10;
         width_text_box = (2 * width) / 3  - 10;
-        //Toast.makeText(getApplicationContext(),width_text_box+""+"   "+width+"",Toast.LENGTH_SHORT).show();
         start_from = 50;
         rel_height = start_from;
 
-        //RelativeLayout container = (RelativeLayout)findViewById(R.id.inner_linear_layout);
-
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.inner_linear_layout);
-        RelativeLayout.LayoutParams relativeLayoutParams;
-        TextView[] textView = new TextView[2];
+        RelativeLayout.LayoutParams relativeLayoutParams, relativeLayout_button_Params;
+        EditText[] editText = new EditText[num];
+        Button [] button_alarm = new Button[num];
+        LinearLayout []linearLayouts = new LinearLayout[num];
 
-// 1st TextView
-        textView[0] = new TextView(this);
+        /*for(int i=0;i<num;i++){
 
-        relativeLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+            //Initialising and adding edit text view
+            editText[i] = new EditText(this);
+            relativeLayoutParams = new RelativeLayout.LayoutParams(width_text_box, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            editText[i].setId(i+1);
+            editText[i].setHint("Medicine Number" + (i+1));
+            relativeLayoutParams.addRule(RelativeLayout.ALIGN_LEFT);
+            relativeLayout.addView(editText[i],relativeLayoutParams);
 
-        textView[0].setId(R.id.input_number); // changed id from 0 to 1
-        textView[0].setText("1");
+            //Initialising and adding button
+            button_alarm[i] = new Button(this);
+            int width_for_button = width-width_text_box;
+            relativeLayout_button_Params = new RelativeLayout.LayoutParams(width_for_button,RelativeLayout.LayoutParams.WRAP_CONTENT);
+            //button_alarm[i].setId(i);
+            button_alarm[i].setText("Alarm "+(i+1));
+            //relativeLayout_button_Params.addRule(RelativeLayout.ALIGN_TOP,editText[i].getId());
+            //relativeLayoutParams.addRule(RelativeLayout.RIGHT_OF, editText[i].getId());
+            relativeLayout.addView(button_alarm[i],relativeLayout_button_Params);
+        }*/
 
-        relativeLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        for(int i=0;i<num;i++){
 
-        relativeLayout.addView(textView[0], relativeLayoutParams);
+            linearLayouts[i] = new LinearLayout(getApplicationContext());
+            editText[i] = new EditText(this);
+            editText[i].setId(i+1);
+            editText[i].setHint("Medicine Number" + (i+1));
 
-// 2nd TextView
-        textView[1] = new TextView(this);
-
-        relativeLayoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-        textView[1].setText("2");
-
-        relativeLayoutParams.addRule(RelativeLayout.RIGHT_OF, textView[0].getId());
-        relativeLayoutParams.addRule(RelativeLayout.ALIGN_TOP, textView[0].getId()); // added top alignment rule
-
-        relativeLayout.addView(textView[1], relativeLayoutParams);
-
-        int i;
-        //for(i = 0 ; i < num ; i ++){
-
-          //  create_container_in_layout(i, container);
-        //}
+        }
 
     }
 
-    /*void create_container_in_layout(int i, RelativeLayout container){
+
+}
+
+
+
+
+/*void create_container_in_layout(int i, RelativeLayout container){
 
         //Initialisation
         EditText et=new EditText(getApplicationContext());
@@ -99,4 +102,3 @@ public class Add_medicines extends AppCompatActivity {
         button.setId(i+1);
         container.addView(button,params1);
     }*/
-}

@@ -33,7 +33,7 @@ public class Activity_for_details extends AppCompatActivity {
                 {
 
                 }
-                Intent intent_for_adding = new Intent(Activity_for_details.this, Add_medicines.class);
+                Intent intent_for_adding = new Intent(Activity_for_details.this, Add_medicines_2.class);
                 intent_for_adding.putExtra(KEY_NUMBERS,num);
                 startActivity(intent_for_adding);
             }
