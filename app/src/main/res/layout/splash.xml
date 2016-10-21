@@ -2,6 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_img">
+    android:layout_centerInParent="true"
+    android:background="@color/splash_bg">
 
+    <ImageView
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:background="@drawable/splash_bg"
+        android:layout_centerInParent="true">
+        </ImageView>
 </RelativeLayout>

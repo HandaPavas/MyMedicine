@@ -41,4 +41,11 @@ public class Activity_for_details extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed(){
+
+        finish();
+        overridePendingTransition  (R.anim.right_slide_in, R.anim.right_slide_out);
+    }
 }
