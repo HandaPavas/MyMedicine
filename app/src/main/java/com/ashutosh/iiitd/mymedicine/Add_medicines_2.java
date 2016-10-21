@@ -26,7 +26,12 @@ public class Add_medicines_2 extends AppCompatActivity {
     private Medicine_Adapter mAdapter;
     private final String KEY_FOR_NAME = "med_name";
     private final String KEY_FOR_TYPE = "med_type";
+    private final String KEY_FOR_ALARM = "alarm_table_id";
     private int flag_before_exit = 0;
+    protected static DBHelper db;
+    int medicine_table_id;
+    boolean how_many_alarm_set[];
+    int curr_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,11 @@ public class Add_medicines_2 extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         Bundle from_details = getIntent().getExtras();
         int num = from_details.getInt("number_of_medicine");
+        medicine_table_id = from_details.getInt("medicine_table_id");
+        how_many_alarm_set = new boolean[num];
+        for(boolean alarm:how_many_alarm_set){
+            alarm = false;
+        }
         prepareMedData(num);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -72,14 +82,23 @@ public class Add_medicines_2 extends AppCompatActivity {
 
     public void sendMedicineDataForAlarm(View view){
         int id = view.getId();
-        Intent intent = new Intent(Add_medicines_2.this,alarm_activity.class);
+        curr_id = id;
+        db = new DBHelper(getApplicationContext());
         EditText tb_name = (EditText)findViewById((1000 + id));
         Spinner sp_type = (Spinner)findViewById((2000 + id));
-        //Toast.smakeText(this, ("Fuck off " + tb_name.getText().toString() + sp_type.getSelectedItem().toString()), Toast.LENGTH_SHORT).show();
-        intent.putExtra(KEY_FOR_NAME,tb_name.getText().toString());
-        intent.putExtra(KEY_FOR_TYPE,sp_type.getSelectedItem().toString());
-        startActivity(intent);
-
+        if(!tb_name.getText().toString().equals("")) {
+            int alarm_table_id = db.insert_data_into_medicine_details(medicine_table_id, (tb_name.getText().toString() + " " + sp_type.getSelectedItem().toString()));
+            //Toast.makeText(this, (id), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Add_medicines_2.this, alarm_activity.class);
+            //how_many_alarm_set[(id - 1)] = true;
+            intent.putExtra(KEY_FOR_NAME, tb_name.getText().toString());
+            intent.putExtra(KEY_FOR_TYPE, sp_type.getSelectedItem().toString());
+            intent.putExtra(KEY_FOR_ALARM, alarm_table_id);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Medicine Name cannot be left blank !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -108,5 +127,13 @@ public class Add_medicines_2 extends AppCompatActivity {
             alertDialog.show();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestcode, int resultcode, Intent data )
+    {
+        if(resultcode == RESULT_OK){
+            how_many_alarm_set[(curr_id - 1)] = true;
+        }
     }
 }
