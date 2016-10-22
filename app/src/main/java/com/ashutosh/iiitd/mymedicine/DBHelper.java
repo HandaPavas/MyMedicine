@@ -28,11 +28,12 @@ public class DBHelper extends SQLiteOpenHelper{
         public static final String TABLE_NAME = "Medicine_details";
         public static final String COLUMN_MED_TABLE_ID = "Medicine_table_id";
         public static final String COLUMN_MEDICINE_NAME = "Medicine_name";
-        public static final String COLUMN_ALARM_TABLE_ID = "Alarm_table";
+        public static final String COLUMN_ALARM_TABLE_ID = "Alarm_table_id";
     }
 
     class Alarm_details{
         public static final String TABLE_NAME = "Alarm_details";
+        public static final String COLUMN_ALARM_TABLE_ID = "Alarm_table_id";
     }
 
     public DBHelper(Context context)
@@ -45,19 +46,26 @@ public class DBHelper extends SQLiteOpenHelper{
         // cerate the Doctor_details table
         Doctor_details doc = new Doctor_details();
         db.execSQL("create table " + doc.TABLE_NAME + "( " +
-                    doc.COLUMN_DOCTOR + " varchar(255), " +
-                    doc.COLUMN_HOSPITAL + " varchar(255)," +
-                    doc.COLUMN_DATE + " DATETIME," +
-                    doc.COLUMN_MEDICINE_TABLE_DATA + " INTEGER  PRIMARY KEY AUTOINCREMENT" +
-                    ");"
+                doc.COLUMN_DOCTOR + " varchar(255), " +
+                doc.COLUMN_HOSPITAL + " varchar(255)," +
+                doc.COLUMN_DATE + " DATETIME," +
+                doc.COLUMN_MEDICINE_TABLE_DATA + " INTEGER  PRIMARY KEY AUTOINCREMENT" +
+                ");"
         );
 
         //create the medicine_details table
         Medicine_details md = new Medicine_details();
         db.execSQL("create table " + md.TABLE_NAME + "( " +
-                 md.COLUMN_MED_TABLE_ID + " INTEGER, " +
-                 md.COLUMN_MEDICINE_NAME + " varchar(255)," +
-                 md.COLUMN_ALARM_TABLE_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT" +
+                md.COLUMN_MED_TABLE_ID + " INTEGER, " +
+                md.COLUMN_MEDICINE_NAME + " varchar(255)," +
+                md.COLUMN_ALARM_TABLE_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT" +
+                ");"
+        );
+
+        //create table Alarm_details
+        Alarm_details ad = new Alarm_details();
+        db.execSQL("create table " + ad.TABLE_NAME + "(" +
+                ad.COLUMN_ALARM_TABLE_ID + " INTEGER" +
                 ");"
         );
     }
@@ -67,7 +75,7 @@ public class DBHelper extends SQLiteOpenHelper{
         // drop doctor_details
         Doctor_details doc = new Doctor_details();
         db.execSQL("DROP TABLE IF EXISTS " + doc.TABLE_NAME);
-         //drop medicine_details
+        //drop medicine_details
         Medicine_details md = new Medicine_details();
         db.execSQL("DROP TABLE IF EXISTS " + md.TABLE_NAME);
         //drop table Alarm_details
@@ -123,5 +131,38 @@ public class DBHelper extends SQLiteOpenHelper{
         if(result.isAfterLast() == false)
             ret = result.getInt(result.getColumnIndex(md.COLUMN_ALARM_TABLE_ID));
         return ret;
+    }
+    public void clear_state(int id){
+        //got medicine table id
+        //now clear all the three tables of the data
+        Doctor_details dd = new Doctor_details();
+        Medicine_details md = new Medicine_details();
+        Alarm_details ad = new Alarm_details();
+        SQLiteDatabase db_w = this.getWritableDatabase();
+        SQLiteDatabase db_r = this.getReadableDatabase();
+
+        String query = "delete from " + dd.TABLE_NAME + " where " + dd.COLUMN_MEDICINE_TABLE_DATA + "=" + id;
+        db_w.execSQL(query);
+
+        query = "select " + md.COLUMN_ALARM_TABLE_ID + " from " + md.TABLE_NAME + " where " + md.COLUMN_MED_TABLE_ID + "=" + id;
+        Cursor cursor = db_r.rawQuery(query, null);
+        cursor.moveToFirst();
+        String entries_to_remove = "in(";
+        while(cursor.isAfterLast() == false){
+            entries_to_remove += cursor.getString(cursor.getColumnIndex(md.COLUMN_ALARM_TABLE_ID));
+            entries_to_remove +=", ";
+            cursor.moveToNext();
+        }
+        if(entries_to_remove.length() > 3)
+            entries_to_remove = entries_to_remove.substring(0, (entries_to_remove.lastIndexOf(',') - 1));
+        entries_to_remove += ")";
+
+        query = "delete from " + md.TABLE_NAME + " where " + md.COLUMN_MED_TABLE_ID + "=" + id;
+        db_w.execSQL(query);
+
+        query = "delete from " + ad.TABLE_NAME + " where " + ad.COLUMN_ALARM_TABLE_ID + " " + entries_to_remove +";";
+        db_w.execSQL(query);
+
+
     }
 }

@@ -38,6 +38,7 @@ public class Add_medicines_2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medicines_2);
+        db = new DBHelper(getApplicationContext());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -96,7 +97,6 @@ public class Add_medicines_2 extends AppCompatActivity {
     public void sendMedicineDataForAlarm(View view){
         int id = view.getId();
         curr_id = id;
-        db = new DBHelper(getApplicationContext());
         EditText tb_name = (EditText)findViewById((1000 + id));
         Spinner sp_type = (Spinner)findViewById((2000 + id));
         if(!tb_name.getText().toString().equals("")) {
@@ -132,6 +132,7 @@ public class Add_medicines_2 extends AppCompatActivity {
             alertDialogBuilder.setNegativeButton("Yes",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    db.clear_state(medicine_table_id);
                     finish();
                     overridePendingTransition  (R.anim.right_slide_in, R.anim.right_slide_out);
                 }
