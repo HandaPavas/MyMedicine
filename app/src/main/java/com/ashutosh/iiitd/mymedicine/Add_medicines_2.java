@@ -27,6 +27,7 @@ public class Add_medicines_2 extends AppCompatActivity {
     private final String KEY_FOR_NAME = "med_name";
     private final String KEY_FOR_TYPE = "med_type";
     private final String KEY_FOR_ALARM = "alarm_table_id";
+    private static final int REQ_CODE = 0;
     private int flag_before_exit = 0;
     protected static DBHelper db;
     int medicine_table_id;
@@ -64,8 +65,20 @@ public class Add_medicines_2 extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                int i;
+                for(i = 0 ; i < how_many_alarm_set.length ; i++){
+                    if(how_many_alarm_set[i] == false)
+                        break;
+                }
+                if(i == how_many_alarm_set.length){
+                    flag_before_exit = 1;
+                }
+                else{
+                    flag_before_exit = 0;
+                }
+                onBackPressed();
             }
         });
     }
@@ -94,7 +107,8 @@ public class Add_medicines_2 extends AppCompatActivity {
             intent.putExtra(KEY_FOR_NAME, tb_name.getText().toString());
             intent.putExtra(KEY_FOR_TYPE, sp_type.getSelectedItem().toString());
             intent.putExtra(KEY_FOR_ALARM, alarm_table_id);
-            startActivity(intent);
+            startActivityForResult(intent, REQ_CODE);
+            overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
         }
         else{
             Toast.makeText(getApplicationContext(), "Medicine Name cannot be left blank !", Toast.LENGTH_SHORT).show();
@@ -111,7 +125,7 @@ public class Add_medicines_2 extends AppCompatActivity {
             alertDialogBuilder.setPositiveButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
-                    Toast.makeText(Add_medicines_2.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(Add_medicines_2.this,"You clicked yes button",Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -126,6 +140,10 @@ public class Add_medicines_2 extends AppCompatActivity {
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
+        else{
+            Toast.makeText(getApplicationContext(), "Data Saved !", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
     }
 
@@ -133,7 +151,7 @@ public class Add_medicines_2 extends AppCompatActivity {
     protected void onActivityResult(int requestcode, int resultcode, Intent data )
     {
         if(resultcode == RESULT_OK){
-            how_many_alarm_set[(curr_id - 1)] = true;
+            how_many_alarm_set[curr_id] = true;
         }
     }
 }

@@ -209,11 +209,12 @@ public class alarm_activity extends AppCompatActivity
         //Toast.makeText(getApplicationContext(), "Fuck off !", Toast.LENGTH_SHORT).show();
         Spinner repeat = (Spinner)findViewById(R.id.spinner1);
         Spinner duration = (Spinner)findViewById(R.id.spinner2);
-        String repeat_time = repeat.getSelectedItem().toString();
+        //String repeat_time = repeat.getSelectedItem().toString();
         int time = Integer.parseInt(duration.getSelectedItem().toString());
         int hour_increment = 0;
         int min_increment = 0;
-        if(repeat_time.equals("Daily")){
+        boolean alarm_set = false;
+        /*if(repeat_time.equals("Daily")){
 
 
         }
@@ -222,33 +223,49 @@ public class alarm_activity extends AppCompatActivity
         }
         else{
             //do increment for Monthly
-        }
+        }*/
         //currently doing only for 3 alarms. Will be done dynamically later
 
         if(checkBox1.isChecked())
         {
+            alarm_set = true;
             Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
             i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
             i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_1);
             i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_1);
+            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
             startActivity(i);
         }
 
         if(checkBox2.isChecked())
         {
+            alarm_set = true;
             Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
             i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
             i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_2);
             i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_2);
+            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
             startActivity(i);
         }
 
         if(checkBox3.isChecked()) {
+            alarm_set = true;
             Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
             i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
             i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_3);
             i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_3);
+            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
             startActivity(i);
+        }
+
+        Toast.makeText(getApplicationContext(), "Alarm Set !", Toast.LENGTH_SHORT).show();
+        if(alarm_set == true){
+            setResult(RESULT_OK);
+            finish();
+        }
+        else{
+            setResult(RESULT_CANCELED);
+            finish();
         }
     }
 }

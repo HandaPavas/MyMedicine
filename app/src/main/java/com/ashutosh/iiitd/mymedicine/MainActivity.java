@@ -79,12 +79,11 @@ public class MainActivity extends AppCompatActivity
                 .bitmapTransform(new Transform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(pic1);
-    mButton_for_add.setOnClickListener(new View.OnClickListener() {
-        @Override
+                mButton_for_add.setOnClickListener(new View.OnClickListener() {
+                @Override
             public void onClick(View view) {
                 Intent intent_for_location = new Intent(MainActivity.this, Activity_for_details.class);
                 startActivity(intent_for_location);
-                overridePendingTransition  (R.anim.right_slide_in, R.anim.right_slide_out);
             }
         });
 
