@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
@@ -12,84 +12,88 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.ashutosh.iiitd.mymedicine.MainActivity"
     tools:showIn="@layout/app_bar_main">
-
-    <RelativeLayout
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp"
-        android:layout_height="match_parent"
-        android:alpha="1"
-        android:layout_width="match_parent" >
-    <android.support.v7.widget.CardView
+    
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="112dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:id="@+id/card_view_for_add"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-        <RelativeLayout
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_prescription"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/card_margin"
+                android:elevation="3dp"
+                android:onClick="click_to_add_prescription"
+                app:cardCornerRadius="@dimen/card_album_radius">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_prescription"
+                        android:layout_width="120dp"
+                        android:layout_height="@dimen/album_cover_height"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/prescription"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/prescription_add"
+                        android:text="Add a prescription"
+                        android:typeface="serif"
+                        android:textStyle="italic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_prescription"
+                        android:paddingLeft="@dimen/album_title_padding"
+                        android:paddingRight="@dimen/album_title_padding"
+                        android:paddingTop="@dimen/album_title_padding"
+                        android:textSize="@dimen/album_title" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
-            android:background="#ffffffff">
-            <TextView
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text="Add prescription"
-                android:textSize="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp">
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/card_margin"
+            android:elevation="3dp"
+            app:cardCornerRadius="@dimen/card_album_radius">
 
-                </TextView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <Button
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="200dp"
-                android:id="@+id/button_for_add"
-                android:text="ADD"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="12dp">
-                </Button>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <ImageView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/album_cover_height"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:src="@drawable/prescription"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:text="Hello world"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/thumbnail"
+                    android:paddingLeft="@dimen/album_title_padding"
+                    android:paddingRight="@dimen/album_title_padding"
+                    android:paddingTop="@dimen/album_title_padding"
+                    android:textSize="@dimen/album_title" />
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:id="@+id/card_view_for_sub"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffffff">
-            <TextView
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text="Find Substitutes"
-                android:textSize="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp">
+            </RelativeLayout>
 
-            </TextView>
-
-            <Button
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="200dp"
-                android:text="FIND"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="12dp">
-            </Button>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-    </RelativeLayout>
-</RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</LinearLayout>

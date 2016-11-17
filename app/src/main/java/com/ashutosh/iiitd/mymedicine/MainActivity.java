@@ -2,7 +2,6 @@ package com.ashutosh.iiitd.mymedicine;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -46,8 +45,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mButton_for_add = (Button)findViewById(R.id.button_for_add);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -79,14 +76,20 @@ public class MainActivity extends AppCompatActivity
                 .bitmapTransform(new Transform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(pic1);
-                mButton_for_add.setOnClickListener(new View.OnClickListener() {
+                /*mButton_for_add.setOnClickListener(new View.OnClickListener() {
                 @Override
             public void onClick(View view) {
                 Intent intent_for_location = new Intent(MainActivity.this, Activity_for_details.class);
                 startActivity(intent_for_location);
             }
-        });
+        });*/
 
+    }
+
+    public void click_to_add_prescription(View view){
+
+        Intent intent_for_adding = new Intent(MainActivity.this, Activity_for_details.class);
+        startActivity(intent_for_adding);
     }
 
     @Override
