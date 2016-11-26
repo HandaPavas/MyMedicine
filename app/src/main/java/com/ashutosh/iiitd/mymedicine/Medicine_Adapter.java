@@ -8,10 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyViewHolder>{
@@ -21,15 +18,13 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public EditText name;
-        public Button add_alarm;
-        public Spinner type_spinner;
+        public TextView name,dosage,type;
 
         public MyViewHolder(View view) {
             super(view);
-            name = (EditText) view.findViewById(R.id.medicine_name);
-            add_alarm = (Button) view.findViewById(R.id.button_alarm);
-            type_spinner = (Spinner)view.findViewById(R.id.spinner1);
+            name = (TextView)view.findViewById(R.id.tv_name);
+            dosage = (TextView)view.findViewById(R.id.tv_dosage);
+            type = (TextView)view.findViewById(R.id.tv_type);
         }
     }
 
@@ -50,15 +45,17 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Medicine med = medList.get(position);
         //String hint_prior = holder.name.getHint().toString();
-        holder.name.setHint("Medicine");
-        holder.name.setId(position + 1000);
+        holder.name.setText(med.getMed_name());
+        holder.dosage.setText(med.getDosage());
+        holder.type.setText(med.getType());
+        /*holder.name.setId(position + 1000);
         holder.add_alarm.setText(med.getBtn_name());
         holder.add_alarm.setId(position);
         holder.type_spinner.setId(position + 2000);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,med.getType());
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.type_spinner.setAdapter(dataAdapter);
+        holder.type_spinner.setAdapter(dataAdapter);*/
     }
 
     @Override

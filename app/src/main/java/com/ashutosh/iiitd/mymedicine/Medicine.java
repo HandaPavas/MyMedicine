@@ -9,19 +9,13 @@ import java.util.List;
 
 public class Medicine {
 
-    private String med_name, btn_name;
-    private List<String> type= new ArrayList<>();
+    private String med_name, type, dosage;
 
-    public Medicine(String med_name,String btn_name){
+    public Medicine(String med_name, String type, String dosage) {
 
         this.med_name = med_name;
-        this.btn_name = btn_name;
-        this.type.add("Tablet");
-        this.type.add("Capsule");
-        this.type.add("Powder");
-        this.type.add("Syrup");
-        this.type.add("Injection");
-        this.type.add("Others");
+        this.type = type;
+        this.dosage = dosage;
     }
 
 
@@ -33,19 +27,20 @@ public class Medicine {
         this.med_name = med_name;
     }
 
-    public String getBtn_name() {
-        return btn_name;
-    }
 
-    public void setBtn_name(String btn_name) {
-        this.btn_name = btn_name;
-    }
-
-    public List<String> getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(List<String> type) {
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
     }
 }

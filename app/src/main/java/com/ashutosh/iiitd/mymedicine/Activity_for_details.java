@@ -8,17 +8,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 public class Activity_for_details extends AppCompatActivity {
 
     protected Button mButton_for_redirect;
     private final static String KEY_NUMBERS = "number_of_medicine";
     private final static String KEY_TAB_ID = "medicine_table_id";
+    private final static String KEY_FOR_NAME = "doc_name";
+    private final static String KEY_FOR_HOSP = "hosp_name";
     TextView numbers;
     TextView doc_name;
     TextView hosp_name;
     int num = 0;
+    String hosp_name_str = "", doc_name_str="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class Activity_for_details extends AppCompatActivity {
                         numbers.getText().toString().equals(""))) {
                     try {
                         num = Integer.parseInt(numbers.getText().toString());
+                        hosp_name_str = hosp_name.getText().toString();
+                        doc_name_str = doc_name.getText().toString();
                     } catch (Exception ex) {
 
                     }
@@ -43,6 +46,8 @@ public class Activity_for_details extends AppCompatActivity {
                     Intent intent_for_adding = new Intent(Activity_for_details.this, Add_medicines_2.class);
                     intent_for_adding.putExtra(KEY_NUMBERS, num);
                     intent_for_adding.putExtra(KEY_TAB_ID, id);
+                    intent_for_adding.putExtra(KEY_FOR_NAME,doc_name_str);
+                    intent_for_adding.putExtra(KEY_FOR_HOSP,hosp_name_str);
                     //Toast.makeText(getApplicationContext(), "Inserted " + id, Toast.LENGTH_SHORT).show();
                     startActivity(intent_for_adding);
                     overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);

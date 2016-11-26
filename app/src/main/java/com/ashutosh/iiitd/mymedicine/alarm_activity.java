@@ -3,6 +3,9 @@ package com.ashutosh.iiitd.mymedicine;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,9 +22,10 @@ import java.util.List;
 public class alarm_activity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener
 {
-    Button edit1,edit2,edit3;
-    CheckBox checkBox1,checkBox2,checkBox3;
     Spinner spinner2,spinner3;
+    private Alarm_adapter mAdapterTime;
+    private ArrayList<Alarm_row> alarmList = new ArrayList<>();
+    RecyclerView rv_edit_alarm;
     private int hour_alarm_1, minute_alarm_1, hour_alarm_2, minute_alarm_2, hour_alarm_3, minute_alarm_3;
     private String tag_for_alarm = "";
 
@@ -31,17 +35,14 @@ public class alarm_activity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle from_details = getIntent().getExtras();
-        int alarm_type_id = from_details.getInt("alarm_table_id");
-        tag_for_alarm = from_details.getString("med_name");
+        //Bundle from_details = getIntent().getExtras();
+        //int alarm_type_id = from_details.getInt("alarm_table_id");
+        //tag_for_alarm = from_details.getString("med_name");
         setContentView(R.layout.activity_alarm_activity);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
         spinner3 = (Spinner) findViewById(R.id.spinner3);
         // spinner3.setVisibility(View.GONE);
-        checkBox1=(CheckBox)findViewById(R.id.checkBox);
-        checkBox2=(CheckBox)findViewById(R.id.checkBox2);
-        checkBox3=(CheckBox)findViewById(R.id.checkBox3);
         //Toast.makeText(getApplicationContext(),"Hello",Toast.LENGTH_SHORT).show();
 
         // Spinner click listener
@@ -49,6 +50,17 @@ public class alarm_activity extends AppCompatActivity
         spinner2.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
+
+        //Recycler view for editing alarms
+
+        rv_edit_alarm = (RecyclerView)findViewById(R.id.rv_edit_alarm);
+        mAdapterTime = new Alarm_adapter(alarmList, getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv_edit_alarm.setLayoutManager(mLayoutManager);
+        rv_edit_alarm.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        rv_edit_alarm.setItemAnimator(new DefaultItemAnimator());
+        rv_edit_alarm.setAdapter(mAdapterTime);
+        prepareInitialAlarmData();
 
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
@@ -68,37 +80,22 @@ public class alarm_activity extends AppCompatActivity
         ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, weekdays);
         dataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner3.setAdapter(dataAdapter3);
-        edit1=(Button)findViewById(R.id.edit_button1);
-        edit2=(Button)findViewById(R.id.edit_button2);
-        edit3=(Button)findViewById(R.id.edit_button3);
-        edit1.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void  onClick(View view){
-                Intent intent=new Intent(getApplicationContext(),EditAlarmActivity.class);
-                startActivityForResult(intent,1);
-
-            }
-        });
-        edit2.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void  onClick(View view){
-                Intent intent=new Intent(getApplicationContext(),EditAlarmActivity.class);
-                startActivityForResult(intent,2);
-
-            }
-        });
-        edit3.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void  onClick(View view){
-                Intent intent=new Intent(getApplicationContext(),EditAlarmActivity.class);
-                startActivityForResult(intent,3);
-
-            }
-        });
     }
+
+    //prepare Data for alarm recycler view
+    void prepareInitialAlarmData(){
+
+
+        Alarm_row alarm = new Alarm_row("Breakfast");
+        alarmList.add(alarm);
+        alarm = new Alarm_row("Lunch");
+        alarmList.add(alarm);
+        alarm = new Alarm_row("Dinner");
+        alarmList.add(alarm);
+        mAdapterTime.notifyDataSetChanged();
+    }
+
+
     @Override
     protected void onActivityResult(int requestcode, int resultcode, Intent data )
     {
@@ -121,7 +118,6 @@ public class alarm_activity extends AppCompatActivity
                 String min1=String.valueOf(min);
                 if(min<10)
                     min1="0"+min1;
-                checkBox1.setText("  "+hr1+":"+min1+"  "+str);
 
 
             }
@@ -144,7 +140,6 @@ public class alarm_activity extends AppCompatActivity
                 String min1=String.valueOf(min);
                 if(min<10)
                     min1="0"+min1;
-                checkBox2.setText("  "+hr1+":"+min1+"  "+str);
             }
 
         if(requestcode==3)
@@ -166,7 +161,6 @@ public class alarm_activity extends AppCompatActivity
                 String min1=String.valueOf(min);
                 if(min<10)
                     min1="0"+min1;
-                checkBox3.setText("  "+hr1+":"+min1+"  "+str);
             }
     }
     @Override
@@ -207,10 +201,10 @@ public class alarm_activity extends AppCompatActivity
 
     public void SetAlarm(View v){
         //Toast.makeText(getApplicationContext(), "Fuck off !", Toast.LENGTH_SHORT).show();
-        Spinner repeat = (Spinner)findViewById(R.id.spinner1);
-        Spinner duration = (Spinner)findViewById(R.id.spinner2);
+        //Spinner repeat = (Spinner)findViewById(R.id.spinner1);
+        //Spinner duration = (Spinner)findViewById(R.id.spinner2);
         //String repeat_time = repeat.getSelectedItem().toString();
-        int time = Integer.parseInt(duration.getSelectedItem().toString());
+        //int time = Integer.parseInt(duration.getSelectedItem().toString());
         int hour_increment = 0;
         int min_increment = 0;
         boolean alarm_set = false;
@@ -225,38 +219,6 @@ public class alarm_activity extends AppCompatActivity
             //do increment for Monthly
         }*/
         //currently doing only for 3 alarms. Will be done dynamically later
-
-        if(checkBox1.isChecked())
-        {
-            alarm_set = true;
-            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-            i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
-            i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_1);
-            i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_1);
-            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-            startActivity(i);
-        }
-
-        if(checkBox2.isChecked())
-        {
-            alarm_set = true;
-            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-            i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
-            i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_2);
-            i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_2);
-            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-            startActivity(i);
-        }
-
-        if(checkBox3.isChecked()) {
-            alarm_set = true;
-            Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-            i.putExtra(AlarmClock.EXTRA_MESSAGE, tag_for_alarm);
-            i.putExtra(AlarmClock.EXTRA_HOUR, hour_alarm_3);
-            i.putExtra(AlarmClock.EXTRA_MINUTES, minute_alarm_3);
-            i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-            startActivity(i);
-        }
 
         Toast.makeText(getApplicationContext(), "Alarm Set !", Toast.LENGTH_SHORT).show();
         if(alarm_set == true){

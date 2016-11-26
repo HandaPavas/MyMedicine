@@ -42,6 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".alarm_activity" />
         <activity android:name=".EditAlarmActivity"></activity>
+
     </application>
 
 </manifest>

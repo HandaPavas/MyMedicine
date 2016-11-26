@@ -101,108 +101,50 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Set Alarm:"
-        android:id="@+id/textView3"
+        android:id="@+id/tv_setalarm"
         android:textSize="20dp"
         android:layout_below="@id/add_linear"
         />
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/linear"
-        android:layout_below="@id/textView3"
-        >
+        android:orientation="vertical"
+        android:layout_below="@+id/tv_setalarm">
 
-        <CheckBox
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="    09:30 AM"
-            android:layout_weight="1"
-            android:id="@+id/checkBox" />
-
-        <Button
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-            android:text="EDIT"
-            android:id="@+id/edit_button1"
-            android:layout_marginEnd="1dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linear2"
-        android:layout_below="@id/linear"
-        >
-
-        <CheckBox
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="    12:30 PM"
-            android:layout_weight="1"
-            android:id="@+id/checkBox2" />
-
-        <Button
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-            android:text="EDIT"
-            android:id="@+id/edit_button2"
-            android:layout_marginEnd="1dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linear2"
-        android:id="@+id/linear3">
-
-        <CheckBox
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="    09:30 AM"
-            android:layout_weight="1"
-            android:id="@+id/checkBox3" />
-
-        <Button
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-            android:text="EDIT"
-            android:id="@+id/edit_button3"
-            android:layout_marginEnd="1dp"/>
-    </LinearLayout>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="112dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:id="@+id/card_view"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="SetAlarm">
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_edit_alarm"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#d92329">
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Add Alarm"
-                android:textSize="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="15dp">
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            />
 
-            </TextView>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="112dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/card_view"
+            android:onClick="SetAlarm">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#d92329">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Add Alarm"
+                    android:textSize="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="15dp">
+
+                </TextView>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 </RelativeLayout>

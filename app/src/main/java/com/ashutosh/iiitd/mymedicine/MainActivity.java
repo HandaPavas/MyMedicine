@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
     public void click_to_add_prescription(View view){
 
-        Intent intent_for_adding = new Intent(MainActivity.this, Activity_for_details.class);
+        Intent intent_for_adding = new Intent(MainActivity.this, alarm_activity.class);
         startActivity(intent_for_adding);
     }
 

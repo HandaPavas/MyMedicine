@@ -3,22 +3,25 @@ package com.ashutosh.iiitd.mymedicine;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class Add_medicines_2 extends AppCompatActivity {
+public class Add_medicines_2 extends AppCompatActivity implements Interface_for_fragment{
 
     private List<Medicine> medList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -32,6 +35,8 @@ public class Add_medicines_2 extends AppCompatActivity {
     int medicine_table_id;
     boolean how_many_alarm_set[];
     int curr_id;
+    TextView hospital,doctor;
+    MedicineDialogFragment mdfrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,16 @@ public class Add_medicines_2 extends AppCompatActivity {
         db = new DBHelper(getApplicationContext());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Bundle from_details = getIntent().getExtras();
+        hospital = (TextView)findViewById(R.id.tv_hospName);
+        doctor = (TextView)findViewById(R.id.tv_docName);
 
+        //INitialising the details of hospital and doctor
+
+        String hosp_name = from_details.getString("hosp_name");
+        String doc_name = from_details.getString("doc_name");
+        hospital.setText(hosp_name);
+        doctor.setText(doc_name);
 
         //Here goes the code for initialising the recycler view
 
@@ -52,14 +66,13 @@ public class Add_medicines_2 extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        Bundle from_details = getIntent().getExtras();
         int num = from_details.getInt("number_of_medicine");
         medicine_table_id = from_details.getInt("medicine_table_id");
         how_many_alarm_set = new boolean[num];
         for(boolean alarm:how_many_alarm_set){
             alarm = false;
         }
-        prepareMedData(num);
+        //prepareMedData(num);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +96,7 @@ public class Add_medicines_2 extends AppCompatActivity {
         });
     }
 
-    void prepareMedData(int num){
+    /*void prepareMedData(int num){
 
         for(int i=0;i<num;i++){
 
@@ -91,7 +104,7 @@ public class Add_medicines_2 extends AppCompatActivity {
             medList.add(med);
         }
         mAdapter.notifyDataSetChanged();
-    }
+    }*/
 
     public void sendMedicineDataForAlarm(View view){
         int id = view.getId();
@@ -154,4 +167,41 @@ public class Add_medicines_2 extends AppCompatActivity {
             how_many_alarm_set[curr_id] = true;
         }
     }
+
+    protected void click_to_add_medicine(View v){
+
+        //here we call the dialog fragment and initialise data
+        mdfrag = new MedicineDialogFragment();
+        mdfrag.show(getSupportFragmentManager(),"dummyText");
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        return;
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.dialog_fragment_medicine, null);
+
+        EditText editText =  (EditText)dialog.getDialog().findViewById(R.id.project_name);
+        Spinner sp_type = (Spinner)dialog.getDialog().findViewById(R.id.sp_type);
+        EditText dosage = (EditText)dialog.getDialog().findViewById(R.id.et_dosage);
+        String type = sp_type.getSelectedItem().toString();
+        String dosage1 = dosage.getText().toString();
+        String projectName = editText.getText().toString();
+        if(!projectName.equals("")){
+            Medicine med = new Medicine(projectName, type, dosage1);
+            Toast.makeText(getApplicationContext(),projectName + type + dosage1,Toast.LENGTH_SHORT).show();
+            medList.add(med);
+            mAdapter.notifyDataSetChanged();
+        }
+        else
+            onDialogNegativeClick(dialog);
+
+
+    }
+
 }
