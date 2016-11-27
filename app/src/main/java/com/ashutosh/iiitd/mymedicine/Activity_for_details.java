@@ -1,12 +1,19 @@
 package com.ashutosh.iiitd.mymedicine;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
+
+import helperClasses.DBHelper;
 
 public class Activity_for_details extends AppCompatActivity {
 
@@ -15,39 +22,41 @@ public class Activity_for_details extends AppCompatActivity {
     private final static String KEY_TAB_ID = "medicine_table_id";
     private final static String KEY_FOR_NAME = "doc_name";
     private final static String KEY_FOR_HOSP = "hosp_name";
-    TextView numbers;
+    TextView date;
     TextView doc_name;
     TextView hosp_name;
-    int num = 0;
-    String hosp_name_str = "", doc_name_str="";
+    String hosp_name_str = "", doc_name_str="",date_str="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_for_details);
+        date = (TextView)findViewById(R.id.tv_date_prescription);
         mButton_for_redirect = (Button)findViewById(R.id.button_for_redirect);
         mButton_for_redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                numbers = (TextView)findViewById(R.id.input_number);
+                date = (TextView)findViewById(R.id.tv_date_prescription);
                 doc_name = (TextView)findViewById(R.id.input_doc_name);
                 hosp_name = (TextView)findViewById(R.id.input_hospital);
                 if(!(doc_name.getText().toString().equals("") || hosp_name.getText().toString().equals("") ||
-                        numbers.getText().toString().equals(""))) {
+                        date.getText().toString().equals(""))) {
                     try {
-                        num = Integer.parseInt(numbers.getText().toString());
+                        date_str = date.getText().toString();
                         hosp_name_str = hosp_name.getText().toString();
                         doc_name_str = doc_name.getText().toString();
                     } catch (Exception ex) {
 
                     }
                     DBHelper db = new DBHelper(getApplicationContext());
-                    int id = db.insert_data_into_doctor_details(doc_name.getText().toString(), hosp_name.getText().toString());
+                    DBHelper.Prescription obj_pres = db.new Prescription();
+                    int presc_id = obj_pres.insert_data(doc_name_str,hosp_name_str,date_str);
                     Intent intent_for_adding = new Intent(Activity_for_details.this, Add_medicines_2.class);
-                    intent_for_adding.putExtra(KEY_NUMBERS, num);
-                    intent_for_adding.putExtra(KEY_TAB_ID, id);
+                    //intent_for_adding.putExtra(KEY_NUMBERS, num);
+                    //intent_for_adding.putExtra(KEY_TAB_ID, id);
                     intent_for_adding.putExtra(KEY_FOR_NAME,doc_name_str);
                     intent_for_adding.putExtra(KEY_FOR_HOSP,hosp_name_str);
+                    intent_for_adding.putExtra("KEY_FOR_PRES_ID",presc_id);
                     //Toast.makeText(getApplicationContext(), "Inserted " + id, Toast.LENGTH_SHORT).show();
                     startActivity(intent_for_adding);
                     overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
@@ -58,6 +67,42 @@ public class Activity_for_details extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //date picker fragment
+
+    public void setDate(View view) {
+        showDialog(999);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == 999) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(this, myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            showDate(arg1, arg2+1, arg3);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        date.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
     }
 
     @Override

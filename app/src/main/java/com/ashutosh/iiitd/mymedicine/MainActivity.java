@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_for_location);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
     public void click_to_add_prescription(View view){
 
-        Intent intent_for_adding = new Intent(MainActivity.this, alarm_activity.class);
+        Intent intent_for_adding = new Intent(MainActivity.this, Activity_for_details.class);
         startActivity(intent_for_adding);
     }
 

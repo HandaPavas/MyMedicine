@@ -1,5 +1,6 @@
 package com.ashutosh.iiitd.mymedicine;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class alarm_activity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Bundle from_details = getIntent().getExtras();
+        Bundle from_details = getIntent().getExtras();
         //int alarm_type_id = from_details.getInt("alarm_table_id");
         //tag_for_alarm = from_details.getString("med_name");
         setContentView(R.layout.activity_alarm_activity);
@@ -93,6 +94,12 @@ public class alarm_activity extends AppCompatActivity
         alarm = new Alarm_row("Dinner");
         alarmList.add(alarm);
         mAdapterTime.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED);
+        super.onBackPressed();
     }
 
 
