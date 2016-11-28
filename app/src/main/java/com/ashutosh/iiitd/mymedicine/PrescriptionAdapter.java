@@ -52,7 +52,6 @@ public class PrescriptionAdapter extends RecyclerView.Adapter<PrescriptionAdapte
         Prescription_obj obj = presList.get(position);
         holder.doc.setText(obj.getDoc_name());
         holder.hosp.setText(obj.getHosp_name());
-
         // loading album cover using Glide library
         //Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
     }

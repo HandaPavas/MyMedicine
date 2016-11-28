@@ -1,5 +1,6 @@
 package com.ashutosh.iiitd.mymedicine;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import helperClasses.DBHelper;
 import helperClasses.Prescription_obj;
+import helperClasses.RecyclerTouchListener;
 
 public class ViewPrescription extends AppCompatActivity {
 
@@ -45,6 +47,33 @@ public class ViewPrescription extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        /*
+        Adding touch listener to recycler view here
+         */
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent_to_display = new Intent(ViewPrescription.this,Add_medicines_2.class);
+                Prescription_obj dummy= presList.get(position);
+                intent_to_display.putExtra("hosp_name",dummy.getHosp_name());
+                intent_to_display.putExtra("doc_name",dummy.getDoc_name());
+                intent_to_display.putExtra("KEY_FOR_PRES_ID",dummy.getId());
+                intent_to_display.putExtra("KEY_FOR_APP",2);
+                startActivity(intent_to_display);
+                overridePendingTransition(R.anim.right_slide_in, R.anim.right_slide_out);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+                /*
+                Code for deletion goes here
+                 */
+                //Toast.makeText(MainActivity.this, itemList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+
+            }
+        }));
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -62,6 +91,8 @@ public class ViewPrescription extends AppCompatActivity {
         DBHelper db = new DBHelper(getApplicationContext());
         DBHelper.Prescription obj_pres = db.new Prescription();
         presList = obj_pres.getAllPrescription();
+        adapter = new PrescriptionAdapter(this, presList);
+        recyclerView.setAdapter(adapter);
         Toast.makeText(getApplicationContext(),presList.size()+"",Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
     }

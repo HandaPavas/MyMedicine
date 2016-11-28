@@ -20,6 +20,7 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
 
     private List<Medicine> medList;
     Context context;
+    int status;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -36,9 +37,10 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
         }
     }
 
-    public Medicine_Adapter(List<Medicine> medList, Context context) {
+    public Medicine_Adapter(List<Medicine> medList, Context context, int k) {
         this.medList = medList;
         this.context = context;
+        this.status = k;
     }
 
     @Override
@@ -58,23 +60,30 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
             holder.dosage.setText(med.getDosage());
             holder.type.setText(med.getType());
             holder.dosage_count.setText(med.getDosage_count()+"");
-            holder.cb_alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            if(position<status){
+                holder.cb_alarm.setVisibility(View.GONE);
+            }
+            else
             {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                holder.cb_alarm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                 {
-                    if ( isChecked ) {
-                        Add_medicines_2.getInstance().toggle_fab_visible();
-                        med.setFlag(1);
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        if ( isChecked ) {
+                            Add_medicines_2.getInstance().toggle_fab_visible();
+                            med.setFlag(1);
+
+                        }
+                        else{
+                            Add_medicines_2.getInstance().toggle_fab_gone();
+                            med.setFlag(0);
+                        }
 
                     }
-                    else{
-                        Add_medicines_2.getInstance().toggle_fab_gone();
-                        med.setFlag(0);
-                    }
+                });
+            }
 
-                }
-            });
         }
 
 
@@ -92,6 +101,43 @@ public class Medicine_Adapter extends RecyclerView.Adapter<Medicine_Adapter.MyVi
     public int getItemCount() {
 
         return medList.size();
+    }
+    /*
+    Code for support of swipe
+     */
+    public boolean isPendingRemoval(int position) {
+        //String[] item = medList.get(position);
+        return false;
+    }
+
+    public void pendingRemoval(int position) {
+        /*final String[] item = medList.get(position);
+        if (!itemsPendingRemoval.contains(item)) {
+            itemsPendingRemoval.add(item);
+            // this will redraw row in "undo" state
+            notifyItemChanged(position);
+            // let's create, store and post a runnable to remove the item
+            Runnable pendingRemovalRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    remove(data_list.indexOf(item));
+                }
+            };
+            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT);
+            pendingRunnables.put(item, pendingRemovalRunnable);
+        }*/
+    }
+
+    public void remove(int position) {
+        Medicine item = medList.get(position);
+        if (medList.contains(item)) {
+            medList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public boolean isUndoOn(){
+        return false;
     }
 
 }

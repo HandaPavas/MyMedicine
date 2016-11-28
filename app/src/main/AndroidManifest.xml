@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -34,7 +36,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Set_location" />
-        <activity android:name=".Activity_for_details" />
+        <activity android:name=".Activity_for_details"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Add_medicines" />
         <activity
             android:name=".Add_medicines_2"
@@ -45,6 +48,10 @@
         <activity
             android:name=".ViewPrescription"
             android:label="@string/title_activity_view_prescription"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity_for_medicine"
+            android:label="@string/title_activity_for_medicine"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

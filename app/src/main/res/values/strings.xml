@@ -22,4 +22,5 @@
     <string name="backdrop_title">LOVE MUSIC</string>
     <string name="backdrop_subtitle">This season top 20 albums</string>
     <string name="title_activity_view_prescription">ViewPrescription</string>
+    <string name="title_activity_for_medicine">Activity_for_medicine</string>
 </resources>

@@ -2,13 +2,21 @@ package com.ashutosh.iiitd.mymedicine;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
@@ -45,10 +53,11 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
     MedicineDialogFragment mdfrag;
     public static Context baseContext;
     static int count_for_medicines = 0;
-    int pres_id;
+    int pres_id,app_id, size_of_db = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medicines_2);
         baseContext = getApplicationContext();
@@ -67,6 +76,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         String hosp_name = from_details.getString("hosp_name");
         String doc_name = from_details.getString("doc_name");
         pres_id = from_details.getInt("KEY_FOR_PRES_ID");
+        app_id = from_details.getInt("KEY_FOR_APP");
         hospital.setText(hosp_name);
         doctor.setText(doc_name);
 
@@ -74,12 +84,21 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new Medicine_Adapter(medList, getBaseContext());
+        mAdapter = new Medicine_Adapter(medList, getBaseContext(),1);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        setUpItemTouchHelper();
         recyclerView.setAdapter(mAdapter);
+        /*
+        populate from database if app is View_Prescription
+         */
+        if(app_id==2){
+
+            //app is view_prescription
+            prepareMedData(pres_id);
+        }
         int num = from_details.getInt("number_of_medicine");
         medicine_table_id = from_details.getInt("medicine_table_id");
         how_many_alarm_set = new boolean[num];
@@ -109,6 +128,22 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
             }
         });
     }// end onCreate
+
+    /*
+    To populate first k elements from database
+     */
+    public void prepareMedData(int id){
+
+        DBHelper db = new DBHelper(getApplicationContext());
+        DBHelper.Medicine_alarm obj = db.new Medicine_alarm();
+        //ArrayList<Medicine> medList2;
+        //Medicine_Adapter mAdapter2;
+        medList = obj.retrieve_data(id);
+        size_of_db = medList.size();
+        mAdapter = new Medicine_Adapter(medList, this, size_of_db);
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
 
     //Method to return an object of this activity
     public static Add_medicines_2 getInstance(){
@@ -161,7 +196,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
             {
                 for_alarm.add(med);
                 obj_med.insert_med(med,pres_id);
-                Toast.makeText(getApplicationContext(),med.getMed_name(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),med.getMed_name(),Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -274,16 +309,188 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         String dosage1 = dosage.getText().toString();
         String projectName = editText.getText().toString();
         int dsg_cnt = Integer.parseInt(dosage_count.getText().toString());
-        if(!projectName.equals("")){
+        if(!projectName.equals("")&&!dosage1.equals("")){
             Medicine med = new Medicine(projectName, type, dosage1,dsg_cnt);
             Toast.makeText(getApplicationContext(),projectName + type + dosage1,Toast.LENGTH_SHORT).show();
             medList.add(med);
+            mAdapter = new Medicine_Adapter(medList, this, size_of_db);
+            recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }
         else
             onDialogNegativeClick(dialog);
 
 
+    }
+
+    /*
+    Swipe to delete begins here
+     */
+    private void setUpItemTouchHelper() {
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            // we want to cache these and not allocate anything repeatedly in the onChildDraw method
+            Drawable background;
+            Drawable xMark;
+            int xMarkMargin;
+            boolean initiated;
+
+            private void init() {
+                background = new ColorDrawable(Color.RED);
+                xMark = ContextCompat.getDrawable(Add_medicines_2.this, R.drawable.ic_clear_black_24px);
+                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                xMarkMargin = (int) Add_medicines_2.this.getResources().getDimension(R.dimen.ic_clear_margin);
+                initiated = true;
+            }
+
+            // not important, we don't want drag & drop
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                int position = viewHolder.getAdapterPosition();
+                Medicine_Adapter testAdapter = (Medicine_Adapter)recyclerView.getAdapter();
+                if (testAdapter.isPendingRemoval(position)) {
+                    return 0;
+                }
+                return super.getSwipeDirs(recyclerView, viewHolder);
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                Medicine_Adapter adapter = (Medicine_Adapter)recyclerView.getAdapter();
+                boolean undoOn = adapter.isUndoOn();
+                if (undoOn) {
+                    adapter.pendingRemoval(swipedPosition);
+                } else {
+                    adapter.remove(swipedPosition);
+                }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                View itemView = viewHolder.itemView;
+
+                // not sure why, but this method get's called for viewholder that are already swiped away
+                if (viewHolder.getAdapterPosition() == -1) {
+                    // not interested in those
+                    return;
+                }
+
+                if (!initiated) {
+                    init();
+                }
+
+                // draw red background
+                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                background.draw(c);
+
+                // draw x mark
+                int itemHeight = itemView.getBottom() - itemView.getTop();
+                int intrinsicWidth = xMark.getIntrinsicWidth();
+                int intrinsicHeight = xMark.getIntrinsicWidth();
+
+                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
+                int xMarkRight = itemView.getRight() - xMarkMargin;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkBottom = xMarkTop + intrinsicHeight;
+                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+
+                xMark.draw(c);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+        };
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback_right = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            // we want to cache these and not allocate anything repeatedly in the onChildDraw method
+            Drawable background;
+            Drawable xMark;
+            int xMarkMargin;
+            boolean initiated;
+
+            private void init() {
+                background = new ColorDrawable(Color.RED);
+                xMark = ContextCompat.getDrawable(Add_medicines_2.this, R.drawable.ic_clear_black_24px);
+                xMark.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+                xMarkMargin = (int) Add_medicines_2.this.getResources().getDimension(R.dimen.ic_clear_margin);
+                initiated = true;
+            }
+
+            // not important, we don't want drag & drop
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                int position = viewHolder.getAdapterPosition();
+                Medicine_Adapter testAdapter = (Medicine_Adapter)recyclerView.getAdapter();
+                if (testAdapter.isPendingRemoval(position)) {
+                    return 0;
+                }
+                return super.getSwipeDirs(recyclerView, viewHolder);
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int swipedPosition = viewHolder.getAdapterPosition();
+                Medicine_Adapter adapter = (Medicine_Adapter)recyclerView.getAdapter();
+                boolean undoOn = adapter.isUndoOn();
+                if (undoOn) {
+                    adapter.pendingRemoval(swipedPosition);
+                } else {
+                    adapter.remove(swipedPosition);
+                }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                View itemView = viewHolder.itemView;
+
+                // not sure why, but this method get's called for viewholder that are already swiped away
+                if (viewHolder.getAdapterPosition() == -1) {
+                    // not interested in those
+                    return;
+                }
+
+                if (!initiated) {
+                    init();
+                }
+
+                // draw red background
+                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                background.draw(c);
+
+                // draw x mark
+                int itemHeight = itemView.getBottom() - itemView.getTop();
+                int intrinsicWidth = xMark.getIntrinsicWidth();
+                int intrinsicHeight = xMark.getIntrinsicWidth();
+
+                int xMarkLeft = itemView.getLeft() - xMarkMargin - intrinsicWidth;
+                int xMarkRight = itemView.getLeft() - xMarkMargin;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkBottom = xMarkTop + intrinsicHeight;
+                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
+
+                xMark.draw(c);
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+        };
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
+        ItemTouchHelper mItemTouchHelper_right = new ItemTouchHelper(simpleItemTouchCallback_right);
+        mItemTouchHelper_right.attachToRecyclerView(recyclerView);
     }
 
 }

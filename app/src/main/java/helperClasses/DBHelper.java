@@ -28,19 +28,22 @@ public class DBHelper extends SQLiteOpenHelper{
         public static final String COL_HOSPITAL_NAME = "HOSPITAL_NAME";
         public static final String COL_DATE_OF_PRESCRIPTION = "DATE_OF_PRESCRIPTION";
         public static final String COL_IMAGE = "IMAGE";
+        public static final String COL_IS_COMPLETE = "IS_COMPLETE";
 
-        int get_new_image_name(){
-            String query = "select max(" + COL_IMAGE + ") from " + TABLE_NAME;
+        public int get_new_image_name(){
+            String query = "select * from " + TABLE_NAME;
             SQLiteDatabase db = obj_to_use.getReadableDatabase();
             Cursor result = db.rawQuery(query, null);
             result.moveToFirst();
-            if(result.isAfterLast() == true){
-                int last_insert = result.getInt(result.getColumnIndex(COL_IMAGE));
-                return (last_insert + 1);
+            int last_insert = -1;
+            while(result.isAfterLast() == false){
+                last_insert = result.getInt(result.getColumnIndex(COL_IMAGE));
+                result.moveToNext();
             }
-            else{
+            if(last_insert == -1)
                 return 1;
-            }
+            else
+                return (last_insert+1);
         }
 
         public int insert_data(String doc_name, String hosp_name, String date){
@@ -56,14 +59,15 @@ public class DBHelper extends SQLiteOpenHelper{
                     + date +"',"
                     + k +" );";
             db.execSQL(query);
-
-            query = "select max(" + COL_ID + ") from " + TABLE_NAME;
+            db = obj_to_use.getReadableDatabase();
+            query = "select * from " + TABLE_NAME;
             Cursor result = db.rawQuery(query, null);
             result.moveToFirst();
-            int last_insert = 0;
-            if(result.isAfterLast() == true){
+            String x;
+            int last_insert = 0, count = 0;
+            while(result.isAfterLast() == false){
                 last_insert = result.getInt(result.getColumnIndex(COL_ID));
-
+                result.moveToNext();
             }
             return last_insert;
         }
@@ -74,13 +78,14 @@ public class DBHelper extends SQLiteOpenHelper{
 
             //hp = new HashMap();
             SQLiteDatabase db = obj_to_use.getReadableDatabase();
-            Cursor res =  db.rawQuery( "select "+ COL_DOCTOR_NAME + ", "+ COL_HOSPITAL_NAME + " from "+TABLE_NAME, null );
+            Cursor res =  db.rawQuery( "select "+ COL_ID+", "+COL_DOCTOR_NAME + ", "+ COL_HOSPITAL_NAME + " from "+TABLE_NAME, null );
             res.moveToFirst();
 
             while(res.isAfterLast() == false){
+                int id = Integer.parseInt(res.getString(res.getColumnIndex(COL_ID)));
                 String doc = res.getString(res.getColumnIndex(COL_DOCTOR_NAME));
                 String hosp = res.getString(res.getColumnIndex(COL_HOSPITAL_NAME));
-                Prescription_obj obj = new Prescription_obj(doc,hosp);
+                Prescription_obj obj = new Prescription_obj(id,doc,hosp);
                 array_list.add(obj);
                 res.moveToNext();
             }
@@ -112,6 +117,26 @@ public class DBHelper extends SQLiteOpenHelper{
                     + pres_id +", "
                     + med.getDosage_count()+" );";
             db.execSQL(query);
+        }
+
+        //retrieve medicines belonging to same prescription
+        public ArrayList<Medicine> retrieve_data(int pres_id){
+
+            ArrayList<Medicine> list_for_adapter = new ArrayList<>();
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            Cursor res =  db.rawQuery("select "+COL_NAME+", "+COL_MAKE+", "+COL_DOSAGE+", "+COL_DOSAGE_COUNT
+                                        +" from "+TABLE_NAME+" WHERE "+COL_PRE_ID+" = "+pres_id+" ;",null);
+            res.moveToFirst();
+            while(res.isAfterLast() == false){
+                String name = res.getString(res.getColumnIndex(COL_NAME));
+                String make = res.getString(res.getColumnIndex(COL_MAKE));
+                String dosage = res.getString(res.getColumnIndex(COL_DOSAGE));
+                int dosage_count = Integer.parseInt(res.getString(res.getColumnIndex(COL_DOSAGE_COUNT)));
+                Medicine obj = new Medicine(name,make,dosage,dosage_count);
+                list_for_adapter.add(obj);
+                res.moveToNext();
+            }
+            return list_for_adapter;
         }
     }
 
