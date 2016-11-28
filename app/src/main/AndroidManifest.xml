@@ -31,8 +31,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Set_location" />
         <activity android:name=".Activity_for_details" />
         <activity android:name=".Add_medicines" />
@@ -41,8 +41,11 @@
             android:label="@string/title_activity_add_medicines_2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".alarm_activity" />
-        <activity android:name=".EditAlarmActivity"></activity>
-
+        <activity android:name=".EditAlarmActivity" />
+        <activity
+            android:name=".ViewPrescription"
+            android:label="@string/title_activity_view_prescription"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

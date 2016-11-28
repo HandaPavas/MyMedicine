@@ -86,10 +86,21 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void click_to_add_prescription(View view){
+    public void click_to_move(View view){
 
-        Intent intent_for_adding = new Intent(MainActivity.this, Activity_for_details.class);
-        startActivity(intent_for_adding);
+        int id = view.getId();
+        switch(id) {
+            case R.id.cv_add_prescription : {
+                Intent intent_for_adding = new Intent(MainActivity.this, Activity_for_details.class);
+                startActivity(intent_for_adding);
+                break;
+            }
+            case R.id.cv_view_prescription : {
+                Intent intent_for_viewing = new Intent(MainActivity.this, ViewPrescription.class);
+                startActivity(intent_for_viewing);
+                break;
+            }
+        }
     }
 
     @Override

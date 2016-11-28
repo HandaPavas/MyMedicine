@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.ashutosh.iiitd.mymedicine.Medicine;
 
+import java.util.ArrayList;
+
 public class DBHelper extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "MyMedicineDB";
@@ -64,6 +66,25 @@ public class DBHelper extends SQLiteOpenHelper{
 
             }
             return last_insert;
+        }
+        //read and populate data
+        public ArrayList<Prescription_obj> getAllPrescription()
+        {
+            ArrayList<Prescription_obj> array_list = new ArrayList<Prescription_obj>();
+
+            //hp = new HashMap();
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            Cursor res =  db.rawQuery( "select "+ COL_DOCTOR_NAME + ", "+ COL_HOSPITAL_NAME + " from "+TABLE_NAME, null );
+            res.moveToFirst();
+
+            while(res.isAfterLast() == false){
+                String doc = res.getString(res.getColumnIndex(COL_DOCTOR_NAME));
+                String hosp = res.getString(res.getColumnIndex(COL_HOSPITAL_NAME));
+                Prescription_obj obj = new Prescription_obj(doc,hosp);
+                array_list.add(obj);
+                res.moveToNext();
+            }
+            return array_list;
         }
     }
 
