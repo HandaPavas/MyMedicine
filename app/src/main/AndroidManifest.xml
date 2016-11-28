@@ -43,7 +43,8 @@
             android:name=".Add_medicines_2"
             android:label="@string/title_activity_add_medicines_2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".alarm_activity" />
+        <activity android:name=".alarm_activity"
+            android:screenOrientation="portrait" />
         <activity android:name=".EditAlarmActivity" />
         <activity
             android:name=".ViewPrescription"

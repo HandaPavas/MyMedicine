@@ -30,6 +30,8 @@ public class alarm_activity extends AppCompatActivity{
     private ArrayList<Alarm_row> alarmList = new ArrayList<>();
     RecyclerView rv_edit_alarm;
     boolean medicine_display_state = false;
+    int selected_item_days = 0;
+    Spinner sp_days, sp_alarm_frequency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +72,73 @@ public class alarm_activity extends AppCompatActivity{
         });
 
         //setting spinner for frequency
-        Spinner sp_alarm_frequency = (Spinner) findViewById(R.id.sp_alarm_frequency);
+        sp_alarm_frequency = (Spinner) findViewById(R.id.sp_alarm_frequency);
         List<String> frequency = new ArrayList<String>();
+        frequency.add("Select");
         frequency.add("Daily");
-        frequency.add("Monthly");
         frequency.add("Weekly");
+        frequency.add("Monthly");
         ArrayAdapter<String> frequency_adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, frequency);
         frequency_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_alarm_frequency.setAdapter(frequency_adapter);
+        //setting up listner for above spinner
+        sp_alarm_frequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                LinearLayout layout;
+                if(i == 1){
+                    //case for daily
+                    layout = (LinearLayout)findViewById(R.id.layout_weekly);
+                    layout.setVisibility(View.GONE);
+                    layout = (LinearLayout)findViewById(R.id.layout_monthly);
+                    layout.setVisibility(View.GONE);
+                    //make others disapperar
+                    layout = (LinearLayout)findViewById(R.id.layout_daily);
+                    layout.setVisibility(View.VISIBLE);
+                    //and make this appear
+                }
+                else if(i == 2){
+                    //case for weekly
+                    layout = (LinearLayout)findViewById(R.id.layout_daily);
+                    layout.setVisibility(View.GONE);
+                    layout = (LinearLayout)findViewById(R.id.layout_monthly);
+                    layout.setVisibility(View.GONE);
+                    //make others disapperar
+                    layout = (LinearLayout)findViewById(R.id.layout_weekly);
+                    layout.setVisibility(View.VISIBLE);
+                    //and make this appear
+                }
+                else if(i == 3){
+                    //case for weekly
+                    layout = (LinearLayout)findViewById(R.id.layout_daily);
+                    layout.setVisibility(View.GONE);
+                    layout = (LinearLayout)findViewById(R.id.layout_weekly);
+                    layout.setVisibility(View.GONE);
+                    //make others disapperar
+                    layout = (LinearLayout)findViewById(R.id.layout_monthly);
+                    layout.setVisibility(View.VISIBLE);
+                    //and make this appear
+                }
+                else{
+                    onNothingSelected(adapterView);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                LinearLayout layout;
+                layout = (LinearLayout)findViewById(R.id.layout_weekly);
+                layout.setVisibility(View.GONE);
+                layout = (LinearLayout)findViewById(R.id.layout_monthly);
+                layout.setVisibility(View.GONE);
+                layout = (LinearLayout)findViewById(R.id.layout_daily);
+                layout.setVisibility(View.GONE);
+            }
+        });
 
         //setting spinner for days
-        Spinner sp_days = (Spinner)findViewById(R.id.sp_days);
+        sp_days = (Spinner)findViewById(R.id.sp_days);
         List<Integer> days = new ArrayList<Integer>();
         for(int i = 1 ; i <= 31 ; i++){
             days.add(i);
@@ -89,6 +146,17 @@ public class alarm_activity extends AppCompatActivity{
         ArrayAdapter<Integer> days_adapter = new ArrayAdapter<Integer>(
                 this, android.R.layout.simple_spinner_item, days);
         sp_days.setAdapter(days_adapter);
+        sp_days.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_item_days = i+1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selected_item_days = 0;
+            }
+        });
 
 
         rv_edit_alarm = (RecyclerView)findViewById(R.id.rv_edit_alarm);
@@ -119,5 +187,58 @@ public class alarm_activity extends AppCompatActivity{
     public void onBackPressed() {
         setResult(Activity.RESULT_CANCELED);
         super.onBackPressed();
+    }
+
+    public void set_alarm(View v){
+
+        if(sp_alarm_frequency.getSelectedItem().toString().equals("Select")){
+            Toast.makeText(getApplicationContext(), "Select the frequency !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(sp_alarm_frequency.getSelectedItem().toString().equals("Daily")){
+
+        }
+        else if(sp_alarm_frequency.getSelectedItem().toString().equals("Weekly")){
+
+            boolean week[] = new boolean[7];
+            for(int i = 0 ; i < 7 ; i++){
+                week[i] = false;
+            }
+            //start filling all the entries for days
+            CheckBox ck_day = (CheckBox) findViewById(R.id.ckb_sunday);
+            if(ck_day.isChecked()){
+                week[0] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_monday);
+            if(ck_day.isChecked()){
+                week[1] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_tuesday);
+            if(ck_day.isChecked()){
+                week[2] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_wednesday);
+            if(ck_day.isChecked()){
+                week[3] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_thursday);
+            if(ck_day.isChecked()){
+                week[4] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_friday);
+            if(ck_day.isChecked()){
+                week[5] = true;
+            }
+            ck_day = (CheckBox) findViewById(R.id.ckb_saturday);
+            if(ck_day.isChecked()){
+                week[6] = true;
+            }
+            //end filling all the entries
+
+
+        }
+        else if(sp_alarm_frequency.getSelectedItem().toString().equals("Monthly")){
+
+        }
     }
 }

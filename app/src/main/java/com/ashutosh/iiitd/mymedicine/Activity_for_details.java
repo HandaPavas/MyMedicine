@@ -146,7 +146,7 @@ public class Activity_for_details extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 1000, bytes);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             File folder= new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"MyMedicine");
             folder.mkdirs();
             DBHelper db = new DBHelper(getApplicationContext());
