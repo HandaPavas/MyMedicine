@@ -189,6 +189,7 @@ public class alarm_activity extends AppCompatActivity{
         super.onBackPressed();
     }
 
+    //set the alarms here
     public void set_alarm(View v){
 
         if(sp_alarm_frequency.getSelectedItem().toString().equals("Select")){

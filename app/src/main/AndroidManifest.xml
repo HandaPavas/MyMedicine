@@ -36,14 +36,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Set_location" />
-        <activity android:name=".Activity_for_details"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity_for_details"
+            android:screenOrientation="portrait" />
         <activity android:name=".Add_medicines" />
         <activity
             android:name=".Add_medicines_2"
             android:label="@string/title_activity_add_medicines_2"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".alarm_activity"
+        <activity
+            android:name=".alarm_activity"
             android:screenOrientation="portrait" />
         <activity android:name=".EditAlarmActivity" />
         <activity
@@ -53,6 +55,8 @@
         <activity
             android:name=".Activity_for_medicine"
             android:label="@string/title_activity_for_medicine"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity_for_alarm"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
