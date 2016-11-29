@@ -138,9 +138,39 @@ public class DBHelper extends SQLiteOpenHelper{
             }
             return list_for_adapter;
         }
+
+        public int get_id(int pres_id, String med_name){
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            Cursor res =  db.rawQuery("select "+COL_MED_ID
+                    +" from "+TABLE_NAME+" WHERE "+COL_PRE_ID +" = "+pres_id+ " and " + COL_NAME + "='" + med_name+ "' ;",null);
+            res.moveToFirst();
+            int id = 0;
+            while(res.isAfterLast() == false){
+                id = res.getInt(res.getColumnIndex(COL_MED_ID));
+                res.moveToNext();
+            }
+            return id;
+        }
+
+        public String get_med_name_for_id(int id){
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            Cursor res =  db.rawQuery("select * from " + TABLE_NAME + " where " + COL_MED_ID + "=" + id, null);
+            res.moveToFirst();
+            String name="";
+            if(res.isAfterLast() == false){
+                name = res.getString(res.getColumnIndex(COL_NAME));
+            }
+            return name;
+        }
+
+        public void decrement_dosage_count(int id){
+            SQLiteDatabase db = obj_to_use.getWritableDatabase();
+            db.execSQL("update " + TABLE_NAME + " set " + COL_DOSAGE_COUNT + "=" + COL_DOSAGE_COUNT + "-1  where " + COL_MED_ID + "=" + id);
+            db.execSQL("delete from " + TABLE_NAME + " where " + COL_DOSAGE_COUNT + "=0");
+        }
     }
 
-    class Alarm{
+    public class Alarm{
         public static final String TABLE_NAME = "ALARM";
         public static final String COL_ID = "ALARM_ID";
         public static final String COL_TIME = "TIME";
@@ -149,6 +179,17 @@ public class DBHelper extends SQLiteOpenHelper{
         public static final String COL_MEDICATION = "MEDICATION";
         public static final String COL_IS_INFINITE = "IS_INFINITE";
         public static final String COL_IS_ACTIVE = "IS_ACTIVE";
+
+        public int get_new_alarm_id(){
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            Cursor res =  db.rawQuery("select * from " + TABLE_NAME,  null);
+            res.moveToFirst();
+            int id = 0;
+            while(res.isAfterLast() == false){
+                id = res.getInt(res.getColumnIndex(COL_ID));
+            }
+            return (id + 1);
+        }
     }
 
     public DBHelper(Context context)

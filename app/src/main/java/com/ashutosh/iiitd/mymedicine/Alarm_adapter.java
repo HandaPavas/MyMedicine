@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -69,13 +70,14 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Alarm_row alarm = alarmList.get(position);
+        final Alarm_row alarm = alarmList.get(position);
         //String hint_prior = holder.name.getHint().toString();
 
         holder.tv_edit_time.setText("Edit " + alarm.getEvent_name() + " alarm !");
         holder.rb_before.setText("Before");
         holder.rb_with.setText("With");
         holder.rb_after.setText("After");
+        alarm.setTime(holder.time_checkbox.getText().toString());
         ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<Integer>(context, android.R.layout.simple_spinner_item,alarm.getNumber());
         holder.btn_toggle_visibility.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -99,10 +101,27 @@ public class Alarm_adapter extends RecyclerView.Adapter<Alarm_adapter.MyViewHold
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         holder.time_checkbox.setText("   "+selectedHour + ":" + selectedMinute);
+                        holder.time_checkbox.setChecked(false);
                     }
-                }, hour, minute, false);//Yes 24 hour time
+                }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
+
+            }
+        });
+        holder.time_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if ( isChecked ) {
+                    alarm.setFlag(1);
+                    alarm.setTime(holder.time_checkbox.getText().toString());
+
+                }
+                else{
+                    alarm.setFlag(0);
+                }
 
             }
         });

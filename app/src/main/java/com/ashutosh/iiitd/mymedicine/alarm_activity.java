@@ -1,7 +1,11 @@
 package com.ashutosh.iiitd.mymedicine;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaExtractor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,8 +25,11 @@ import android.widget.Toast;
 import android.provider.AlarmClock;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+
+import helperClasses.DBHelper;
 
 public class alarm_activity extends AppCompatActivity{
 
@@ -31,23 +38,34 @@ public class alarm_activity extends AppCompatActivity{
     RecyclerView rv_edit_alarm;
     boolean medicine_display_state = false;
     int selected_item_days = 0;
+    String csv_med = "";
     Spinner sp_days, sp_alarm_frequency;
+    ArrayList<Medicine> selected_medicines;
+    DBHelper db ;
+    PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle from_details = getIntent().getExtras();
         setContentView(R.layout.activity_alarm_activity);
-
+        db = new DBHelper(getApplicationContext());
         //Recycler view for editing alarms
-        ArrayList<Medicine> selected_medicines = (ArrayList<Medicine>)from_details.getSerializable("KEY_FOR_LIST");
+        selected_medicines = (ArrayList<Medicine>)from_details.getSerializable("KEY_FOR_LIST");
         //Setting medicines text view
         TextView tv_all_medicines = (TextView)findViewById(R.id.tv_all_medicines);
         Iterator<Medicine> it = selected_medicines.iterator();
         String all_medicines = "\n";
+        Medicine m; int id;
+        DBHelper.Medicine_alarm db_medicine = db.new Medicine_alarm();
         while(it.hasNext()){
-            all_medicines += it.next().getMed_name() + "\n";
+            m = it.next();
+            all_medicines += m.getMed_name() + "\n";
+            id = db_medicine.get_id(getIntent().getExtras().getInt("PRES_ID"), m.getMed_name());
+            m.setId(id);
+            csv_med += id + ",";
         }
+        csv_med = csv_med.substring(0, csv_med.lastIndexOf(','));
         tv_all_medicines.setText(all_medicines);
 
         //setting image button for hiding
@@ -196,7 +214,51 @@ public class alarm_activity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "Select the frequency !", Toast.LENGTH_SHORT).show();
             return;
         }
-        else if(sp_alarm_frequency.getSelectedItem().toString().equals("Daily")){
+
+        //Get the checkboxes ticked
+        Calendar calendar = Calendar.getInstance();
+        Iterator<Alarm_row> itr = alarmList.iterator();
+        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        while(itr.hasNext())
+        {
+            Alarm_row med = itr.next();
+            if(med.getFlag()==1)
+            {
+                String time = med.getTime().trim();
+                int hr = Integer.parseInt(time.substring(0, time.indexOf(':')));
+                int min = Integer.parseInt(time.substring(time.indexOf(':')+1));
+                //Toast.makeText(getApplicationContext(), hr + " bhasad " + min, Toast.LENGTH_SHORT).show();
+                calendar.set(Calendar.HOUR_OF_DAY, hr);
+                calendar.set(Calendar.MINUTE, min);
+
+                DBHelper.Alarm alarm = db.new Alarm();
+                int alarm_id = alarm.get_new_alarm_id();
+                Intent intent = new Intent(getApplicationContext(), Receiver.class);
+                intent.putExtra("CSV_LIST_MED", csv_med);
+                intent.putExtra("time", time);
+                intent.putExtra("called_from", "application");
+                intent.putExtra("alarm_id", alarm_id);
+                pendingIntent = PendingIntent.getBroadcast(alarm_activity.this, alarm_id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                //alarm.insert_alarm(time, alarm_id, );
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result",selected_medicines);
+                returnIntent.putExtra("Pres_id",getIntent().getExtras().getInt("PRES_ID"));
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+        }
+
+        //csv_med is the CSV of medications
+
+        if(sp_alarm_frequency.getSelectedItem().toString().equals("Daily")){
+            Iterator<Medicine> it = selected_medicines.iterator();
+            DBHelper.Medicine_alarm db_medicine = db.new Medicine_alarm();
+            Medicine m;
+            while(it.hasNext()){
+                m = it.next();
+            }
+
 
         }
         else if(sp_alarm_frequency.getSelectedItem().toString().equals("Weekly")){

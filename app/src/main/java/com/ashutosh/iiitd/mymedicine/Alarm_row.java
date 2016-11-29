@@ -10,7 +10,9 @@ import java.util.List;
 public class Alarm_row {
 
     private String event_name;
+    private String time;
     private List<Integer> number= new ArrayList<>();
+    private int flag = 0;
 
     public Alarm_row(String event_name){
         this.event_name = event_name;
@@ -35,5 +37,21 @@ public class Alarm_row {
 
     public void setNumber(List<Integer> type) {
         this.number = type;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

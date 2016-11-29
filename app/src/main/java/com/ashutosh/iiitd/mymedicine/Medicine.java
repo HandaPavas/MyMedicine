@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Medicine implements Serializable{
 
     private String med_name, type, dosage;
-    private int flag = 0, dosage_count;
+    private int flag = 0, dosage_count , id;
 
     public Medicine(String med_name, String type, String dosage, int dosage_count) {
 
@@ -24,6 +24,10 @@ public class Medicine implements Serializable{
     public String getMed_name() {
         return med_name;
     }
+
+    public int getId(){return id;}
+
+    public void setId(int id){this.id = id;}
 
     public void setMed_name(String med_name) {
         this.med_name = med_name;

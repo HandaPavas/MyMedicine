@@ -56,8 +56,15 @@
             android:name=".Activity_for_medicine"
             android:label="@string/title_activity_for_medicine"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity_for_alarm"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity_for_alarm"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver
+            android:name=".Receiver"
+            android:enabled="true"
+            android:showOnLockScreen="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

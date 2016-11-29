@@ -202,6 +202,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         }
         Intent intent_for_alarm = new Intent(Add_medicines_2.this,alarm_activity.class);
         intent_for_alarm.putExtra("KEY_FOR_LIST",for_alarm);
+        intent_for_alarm.putExtra("PRES_ID", pres_id);
         startActivityForResult(intent_for_alarm,1);
         overridePendingTransition(R.anim.right_slide_in,R.anim.right_slide_out);
     }
@@ -275,7 +276,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
     protected void onActivityResult(int requestcode, int resultcode, Intent data )
     {
         if(resultcode == RESULT_OK){
-            how_many_alarm_set[curr_id] = true;
+            prepareMedData(data.getExtras().getInt("Pres_id"));
         }
         else
         {
