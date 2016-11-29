@@ -6,6 +6,9 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -38,6 +41,10 @@ public class Activity_for_alarm extends AppCompatActivity {
         RelativeLayout rl_alarm_activity = (RelativeLayout)findViewById(R.id.activity_for_alarm);
         rl_alarm_activity.setBackground(wallpaperDrawable);
 
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
+
         TextView tv_current_time = (TextView)findViewById(R.id.tv_current_time);
         TextView tv_todays_date = (TextView)findViewById(R.id.tv_todays_date);
         TextView tv_medicine_details = (TextView)findViewById(R.id.tv_medicine_details) ;
@@ -50,6 +57,7 @@ public class Activity_for_alarm extends AppCompatActivity {
         final String csv_med = getIntent().getExtras().getString("CSV_LIST_MED");
         final String time = getIntent().getExtras().getString("time");
         String called_from = getIntent().getExtras().getString("called_from");
+        final int alarm_id = getIntent().getExtras().getInt("alarm_id");
         if(csv_med != null){
             arr = csv_med.split("[,]");
             DBHelper db = new DBHelper(getApplicationContext());
@@ -81,9 +89,12 @@ public class Activity_for_alarm extends AppCompatActivity {
                 intent.putExtra("CSV_LIST_MED", csv_med);
                 intent.putExtra("time", time);
                 intent.putExtra("called_from", "alarm");
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity_for_alarm.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, (20*60*1000), pendingIntent);
+                r.stop();
+                Intent inte = (Intent)getIntent().getExtras().get("intent");
+                PendingIntent.getBroadcast(getApplicationContext(), alarm_id, inte, PendingIntent.FLAG_UPDATE_CURRENT).cancel();
                 finish();
             }
         };
@@ -109,9 +120,12 @@ public class Activity_for_alarm extends AppCompatActivity {
                 intent.putExtra("CSV_LIST_MED", csv_med);
                 intent.putExtra("time", time);
                 intent.putExtra("called_from", "alarm");
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity_for_alarm.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, (10*60*1000), pendingIntent);
+                r.stop();
+                Intent inte = (Intent)getIntent().getExtras().get("intent");
+                PendingIntent.getBroadcast(getApplicationContext(), alarm_id, inte, PendingIntent.FLAG_UPDATE_CURRENT).cancel();
                 finish();
             }
         };
@@ -139,12 +153,16 @@ public class Activity_for_alarm extends AppCompatActivity {
                 intent.putExtra("time", time);
                 intent.putExtra("called_from", "application");
                 intent.putExtra("alarm_id", getIntent().getExtras().getInt("alarm_id"));
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(Activity_for_alarm.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.substring(0, time.indexOf(':'))));
-                calendar.set(Calendar.MINUTE, Integer.parseInt(time.substring(time.indexOf(':')+1)));
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                Calendar alarm = Calendar.getInstance();
+                Calendar now = Calendar.getInstance();
+                alarm.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.substring(0, time.indexOf(':'))));
+                alarm.set(Calendar.MINUTE, Integer.parseInt(time.substring(time.indexOf(':')+1)));
+                if(alarm.before(now))
+                    alarm.add(Calendar.DAY_OF_MONTH, 1);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarm.getTimeInMillis(), pendingIntent);
+                r.stop();
                 finish();
             }
         };

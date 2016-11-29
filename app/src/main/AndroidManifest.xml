@@ -38,7 +38,9 @@
         <activity android:name=".Set_location" />
         <activity
             android:name=".Activity_for_details"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".Add_medicines" />
         <activity
             android:name=".Add_medicines_2"

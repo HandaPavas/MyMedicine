@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +46,18 @@ public class Activity_for_details extends AppCompatActivity {
         setContentView(R.layout.activity_for_details);
         date = (TextView)findViewById(R.id.tv_date_prescription);
         mButton_for_redirect = (Button)findViewById(R.id.button_for_redirect);
+        /*
+        Toolbar iitialisation
+         */
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //   toolbar.setLogo(R.drawable.applogo);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("MyMedicine");
+        //ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        //ab.setDisplayHomeAsUpEnabled(true);
         mButton_for_redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +94,7 @@ public class Activity_for_details extends AppCompatActivity {
             }
         });
 
-        Button btn_pres = (Button)findViewById(R.id.btn_pres);
+        ImageButton btn_pres = (ImageButton)findViewById(R.id.btn_pres);
         btn_pres.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -146,7 +161,7 @@ public class Activity_for_details extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
             File folder= new File(Environment.getExternalStorageDirectory().getAbsolutePath(),"MyMedicine");
             folder.mkdirs();
             DBHelper db = new DBHelper(getApplicationContext());

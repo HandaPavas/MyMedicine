@@ -1,5 +1,6 @@
 package com.ashutosh.iiitd.mymedicine;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +17,7 @@ public class Receiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent){
 
         try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone r = RingtoneManager.getRingtone(context, notification);
-            r.play();
+
             String list = intent.getExtras().getString("CSV_LIST_MED");
             String time = intent.getExtras().getString("time");
             String called_from = intent.getExtras().getString("called_from");
@@ -27,9 +26,12 @@ public class Receiver extends BroadcastReceiver {
             i.putExtra("CSV_LIST_MED", list);
             i.putExtra("time", time);
             i.putExtra("called_from", called_from);
-            intent.putExtra("alarm_id", alarm_id);
+            i.putExtra("alarm_id", alarm_id);
+            i.putExtra("intent", intent);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.getApplicationContext().startActivity(i);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

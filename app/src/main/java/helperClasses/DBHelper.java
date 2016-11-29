@@ -91,6 +91,18 @@ public class DBHelper extends SQLiteOpenHelper{
             }
             return array_list;
         }
+
+        public int retrieve_img_name(int id){
+            SQLiteDatabase db = obj_to_use.getReadableDatabase();
+            int id_img = 0;
+            Cursor res =  db.rawQuery( "select "+ COL_IMAGE +" from "+TABLE_NAME + " where "+COL_ID + " = "+id+"; ", null );
+            res.moveToFirst();
+            while(res.isAfterLast()==false)
+            {
+                id_img = Integer.parseInt(res.getString(res.getColumnIndex(COL_IMAGE)));
+            }
+            return id_img;
+        }
     }
 
     public class Medicine_alarm{

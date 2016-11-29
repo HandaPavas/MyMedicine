@@ -22,53 +22,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/ll_details">
             <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:typeface="sans"
-                    android:textStyle="bold"
-                    android:text="Doctor's Name :    "/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:typeface="sans"
-                    android:id="@+id/tv_docName"
-                    android:text="Doctor"/>
-            </LinearLayout>
-            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_details">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:typeface="sans"
-                    android:textStyle="bold"
-                    android:text="Hospital's Name :    "/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:typeface="sans"
+                        android:textStyle="bold"
+                        android:text="Doctor's Name :    "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:typeface="sans"
+                        android:id="@+id/tv_docName"
+                        android:text="Doctor"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:typeface="sans"
+                        android:textStyle="bold"
+                        android:text="Hospital's Name :    "/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_hospName"
-                    android:textSize="20dp"
-                    android:typeface="sans"
-                    android:text="hospital"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_hospName"
+                        android:textSize="20dp"
+                        android:typeface="sans"
+                        android:text="hospital"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -95,19 +95,13 @@
                     android:onClick="click_to_add_medicine"
                     android:background="?android:attr/selectableItemBackground"
                     />
+
             </android.support.v7.widget.CardView>
+
         </RelativeLayout>
+
     </ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_switch_for_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="send_Medicines_for_alarm"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_alarm_add_black_48px"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone"/>
+
 
 </RelativeLayout>
 

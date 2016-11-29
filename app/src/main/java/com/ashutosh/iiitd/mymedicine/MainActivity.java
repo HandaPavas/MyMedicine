@@ -36,14 +36,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_for_location);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_for_location = new Intent(MainActivity.this, Set_location.class);
-                startActivity(intent_for_location);
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,6 +78,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        Bundle bundle = new Bundle();
+        onCreate(bundle);
+    }*/
+
     public void click_to_move(View view){
 
         int id = view.getId();
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+      //  getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

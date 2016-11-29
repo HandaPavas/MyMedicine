@@ -17,10 +17,14 @@
     <string name="med_prompt">Choose a Type</string>
 
     <!--Strings for prescription view-->
-    <string name="action_add_favourite">Add to Favourites</string>
-    <string name="action_play_next">Play Next</string>
-    <string name="backdrop_title">LOVE MUSIC</string>
-    <string name="backdrop_subtitle">This season top 20 albums</string>
+    <string name="advice_heading"> <u>ADVICE FOR YOU</u></string>
+    <string name="advice1">Studies show that eating<br /> a proper breakfast is one of<br /> the most positive things you can do<br /> if you are trying to lose <br />weight."</string>
+    <string name="advice2">Try to divide up your dosing times as evenly as possible throughout the day:</string>
+    <string name="advice3"> It is virtually impossible for anyone to remember to take each and every medication dose properly. Missing an occasional dose is probably less of a concern than frequently missing doses or taking incorrect doses</string>
+    <string name="advice4">Drugs are large chemical structures that can be sensitive to the conditions in the stomach. For example, didanosine is destroyed by stomach acid</string>
+    <string name="advice_title2">Taking your medications at the proper intervals</string>
+    <string name="advice_title3">Taking all of your doses</string>
+    <string name="advice_title4">Absorb the proper amount of medication.</string>
     <string name="title_activity_view_prescription">ViewPrescription</string>
     <string name="title_activity_for_medicine">Activity_for_medicine</string>
 </resources>

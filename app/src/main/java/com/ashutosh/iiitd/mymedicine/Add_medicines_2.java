@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -54,6 +55,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
     public static Context baseContext;
     static int count_for_medicines = 0;
     int pres_id,app_id, size_of_db = 0;
+    FloatingActionButton fab_alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +109,13 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         }
         //prepareMedData(num);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 int i;
                 for(i = 0 ; i < how_many_alarm_set.length ; i++){
                     if(how_many_alarm_set[i] == false)
@@ -126,7 +129,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
                 }
                 onBackPressed();
             }
-        });
+        });*/
     }// end onCreate
 
     /*
@@ -156,14 +159,14 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         {
             count_for_medicines++;
             fab_switch_for_alarm.setVisibility(View.VISIBLE);
-            Toast.makeText(baseContext,"Number = "+count_for_medicines,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(baseContext,"Number = "+count_for_medicines,Toast.LENGTH_SHORT).show();
 
         }
         else if(count_for_medicines>0)
         {
             fab_switch_for_alarm.setVisibility(View.VISIBLE);
             count_for_medicines++;
-            Toast.makeText(baseContext,"Number = "+count_for_medicines,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(baseContext,"Number = "+count_for_medicines,Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -239,6 +242,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
         }
     }
 
+
     @Override
     public void onBackPressed(){
         if(flag_before_exit == 0)
@@ -277,6 +281,7 @@ public class Add_medicines_2 extends AppCompatActivity implements Interface_for_
     {
         if(resultcode == RESULT_OK){
             prepareMedData(data.getExtras().getInt("Pres_id"));
+            fab_switch_for_alarm.setVisibility(View.GONE);
         }
         else
         {

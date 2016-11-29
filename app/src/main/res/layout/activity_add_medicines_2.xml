@@ -24,11 +24,13 @@
     <include layout="@layout/content_add_medicines_2" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_switch_for_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="send_Medicines_for_alarm"
+        android:clickable="true"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/ic_alarm_add_black_48px"
+        android:visibility="visible"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -16,129 +16,269 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
-
-        <ImageView
-            android:layout_width="match_parent"
+        <!--Shanu-->
+        <HorizontalScrollView
+            android:id="@+id/hsv1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="100dp"
-            android:id="@+id/img_header"
-            android:src="@drawable/prescription"
+            >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cv_add_prescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:onClick="click_to_move"
+                    card_view:cardBackgroundColor="@color/colorPrimary"
+                    card_view:cardCornerRadius="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add a prescription"
+                        android:textSize="15dp"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="10dp"
+
+                        android:textStyle="italic"
+                        />
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cv_view_prescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:onClick="click_to_move"
+                    card_view:cardBackgroundColor="@color/colorPrimary"
+                    card_view:cardCornerRadius="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View Saved Prescriptions"
+                        android:textSize="15dp"
+                        android:background="@color/colorPrimary"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/white"
+                        android:layout_margin="10dp"
+                        />
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+        </HorizontalScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/advice_tv"
+            android:layout_below="@id/hsv1"
+            android:text="@string/advice_heading"
+            android:layout_margin="10dp"
+            android:textSize="30dp"
+
+            android:textStyle="italic"
             />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/hsv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_header"
-            android:weightSum="2"
-            android:orientation="vertical">
-
+            android:layout_below="@id/advice_tv"
+            >
             <LinearLayout
-                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="horizontal">
+                >
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/cv_add_prescription"
+
+
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view"
+                    android:layout_width="300dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    card_view:cardBackgroundColor="#1fc1b2"
+                    card_view:cardCornerRadius="4dp">
+                    <RelativeLayout
+
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/card_margin"
-                        android:elevation="3dp"
-                        android:onClick="click_to_move"
-                        app:cardCornerRadius="@dimen/card_album_radius">
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/icon_Image"
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:src="@drawable/cardview2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
 
-                            <ImageView
-                                android:id="@+id/img_prescription"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/album_cover_height"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:clickable="true"
-                                android:src="@drawable/prescription"
-                                android:scaleType="fitXY" />
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/title_1_tv"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="20dp"
+                            android:text="Don't skip Breakfast"
+                            android:textSize="20dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/icon_Image"
+                            android:text="@string/advice1"
+                            android:textSize="15dp"
+                            android:layout_margin="10dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-                            <TextView
-                                android:id="@+id/prescription_add"
-                                android:text="Add a prescription"
-                                android:typeface="serif"
-                                android:textStyle="italic"
-                                android:layout_width="match_parent"
-                                android:layout_centerVertical="true"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@id/img_prescription"
-                                android:paddingLeft="@dimen/album_title_padding"
-                                android:paddingRight="@dimen/album_title_padding"
-                                android:paddingTop="@dimen/album_title_padding"
-                                android:textSize="@dimen/album_title" />
-
-
-                        </RelativeLayout>
-
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/cv_view_prescription"
-                        android:layout_height="match_parent"
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view2"
+                    android:layout_width="300dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="10dp"
+                    card_view:cardBackgroundColor="#1fc1b2"
+                    card_view:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/card_margin"
-                        android:elevation="3dp"
-                        android:onClick="click_to_move"
-                        app:cardCornerRadius="@dimen/card_album_radius">
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/icon_Image2"
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:src="@drawable/cardview2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
 
-                            <ImageView
-                                android:id="@+id/thumbnail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/album_cover_height"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:clickable="true"
-                                android:src="@drawable/prescription"
-                                android:scaleType="fitXY" />
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/title_2_tv"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="20dp"
+                            android:text="@string/advice_title2"
+                            android:textSize="17dp"
+                            android:textColor="@android:color/black"
+                            android:textStyle="italic"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/icon_Image2"
+                            android:text="@string/advice2"
+                            android:textSize="15dp"
+                            android:layout_margin="10dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view3"
+                    android:layout_width="300dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="10dp"
+                    card_view:cardBackgroundColor="#1fc1b2"
+                    card_view:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/icon_Image3"
 
-                            <TextView
-                                android:id="@+id/title"
-                                android:text="View Prescriptions"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/thumbnail"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
-                                android:paddingLeft="@dimen/album_title_padding"
-                                android:paddingRight="@dimen/album_title_padding"
-                                android:paddingTop="@dimen/album_title_padding"
-                                android:textSize="@dimen/album_title" />
+                            android:src="@drawable/cardview2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
 
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/title_3_tv"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="17dp"
+                            android:text="@string/advice_title3"
+                            android:textSize="20dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/icon_Image3"
+                            android:text="@string/advice3"
+                            android:textSize="15dp"
+                            android:layout_margin="10dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view4"
+                    android:layout_width="300dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="10dp"
+                    card_view:cardBackgroundColor="#1fc1b2"
+                    card_view:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/icon_Image4"
 
-                        </RelativeLayout>
+                            android:src="@drawable/cardview2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
 
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/title_4_tv"
+                            android:layout_alignParentRight="true"
+                            android:layout_margin="17dp"
+                            android:text="@string/advice_title4"
+                            android:textSize="20dp"
+                            android:textColor="@android:color/black"
+                            android:textStyle="italic"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/icon_Image4"
+                            android:text="@string/advice4"
+                            android:textSize="15dp"
+                            android:layout_margin="10dp"
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic"
+                            />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-            </LinearLayout>
-        </LinearLayout>
+        </HorizontalScrollView>
+        <!--Shanu-->
     </RelativeLayout>
 </ScrollView>
+
+
